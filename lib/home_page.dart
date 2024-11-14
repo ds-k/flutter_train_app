@@ -2,18 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_train_app/seat_page.dart';
 import 'package:flutter_train_app/station_list_page.dart';
 
+enum StationType { departure, arrival }
+
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  String? selectedStation;
+
+  HomePage({this.selectedStation, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  String? departure;
+  List<String> station = [
+    "수서",
+    "동탄",
+    "평택지제",
+    "천안아산",
+    "오송",
+    "대전",
+    "김천구미",
+    "동대구",
+    "경주",
+    "울산",
+    "부산"
+  ];
 
+  String? departure;
   String? arrival;
 
+  void setStation(String station, String title) {
+    switch (title) {
+      case "출발역":
+        setState(() {
+          departure = station;
+        });
+
+      case "도착역":
+        setState(() {
+          arrival = station;
+        });
+    }
+  }
+
+// dark, light
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,21 +60,27 @@ class _HomePageState extends State<HomePage> {
             Container(
               height: 200,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final data = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return StationListPage(title: "출발역");
+                              return StationListPage(
+                                title: "출발역",
+                                station: station,
+                              );
                             },
                           ),
                         );
+
+                        if (data != null) setStation(data[0], data[1]);
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -66,15 +104,19 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(color: Colors.grey)),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final data = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return StationListPage(title: "도착역");
+                              return StationListPage(
+                                title: "도착역",
+                                station: station,
+                              );
                             },
                           ),
                         );
+                        if (data != null) setStation(data[0], data[1]);
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
