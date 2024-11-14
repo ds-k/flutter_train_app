@@ -31,21 +31,33 @@ class _HomePageState extends State<HomePage> {
   String? departure;
   String? arrival;
 
-  void setStation(String station, String title) {
-    switch (title) {
+  void setStation(String title) async {
+    final data = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return StationListPage(
+            title: title,
+            station: station,
+          );
+        },
+      ),
+    );
+    if (data == null) return;
+
+    switch (data[1]) {
       case "출발역":
         setState(() {
-          departure = station;
+          departure = data[0];
         });
 
       case "도착역":
         setState(() {
-          arrival = station;
+          arrival = data[0];
         });
     }
   }
 
-// dark, light
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,21 +79,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        final data = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return StationListPage(
-                                title: "출발역",
-                                station: station,
-                              );
-                            },
-                          ),
-                        );
-
-                        if (data != null) setStation(data[0], data[1]);
-                      },
+                      onTap: () => setStation("출발역"),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -104,20 +102,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(color: Colors.grey)),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        final data = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return StationListPage(
-                                title: "도착역",
-                                station: station,
-                              );
-                            },
-                          ),
-                        );
-                        if (data != null) setStation(data[0], data[1]);
-                      },
+                      onTap: () => setStation("도착역"),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
