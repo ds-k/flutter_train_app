@@ -96,10 +96,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                       width: 2,
                       height: 50,
-                      decoration: BoxDecoration(color: Colors.grey)),
+                      child: DecoratedBox(
+                          decoration: BoxDecoration(color: Colors.grey))),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => setStation("도착역"),
@@ -148,11 +149,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-/*
-모서리 둥글기: 20
-버튼 색상: Colors.purple
-글자 색상: Colors.white
-글자 크기: 18
-글자 두께: FontWeight.bold
-*/
