@@ -14,9 +14,11 @@ class SeatPage extends StatefulWidget {
 }
 
 class _SeatPageState extends State<SeatPage> {
+  // 선택된 좌석을 알기 위한 상태
   int? selectedCol;
   String? selectedRow;
 
+  // 선택된 좌석으로 상태 변경하는 함수
   void onTapSeat(col, row) {
     setState(() {
       selectedCol = col;
@@ -45,6 +47,7 @@ class _SeatPageState extends State<SeatPage> {
     );
   }
 
+  // homePage로부터 departure와 arrival을 받아 표시하는 부분
   Row departureAndArrival() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -67,6 +70,7 @@ class _SeatPageState extends State<SeatPage> {
     );
   }
 
+  // seat의 상태 범례
   Padding labelGuide() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -111,6 +115,7 @@ class _SeatPageState extends State<SeatPage> {
     );
   }
 
+  // column의 label
   Row colLabel() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -124,6 +129,7 @@ class _SeatPageState extends State<SeatPage> {
     );
   }
 
+  // 좌석 선택 영역
   SizedBox seatSelectArea(BuildContext context) {
     return SizedBox(
         height: MediaQuery.of(context).size.height * 0.6,
@@ -137,6 +143,7 @@ class _SeatPageState extends State<SeatPage> {
                     onTapSeat: onTapSeat))));
   }
 
+  // 예매하기 버튼
   SizedBox selectBtn(BuildContext context) {
     return SizedBox(
       width: double.infinity,
