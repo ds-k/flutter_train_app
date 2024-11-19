@@ -13,30 +13,30 @@ class StationListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Container(
-        // decoration: BoxDecoration(
-        //     color: Color.fromRGBO(255, 246, 249, 1)), // appBar와 색상을 맞추기
-        child: ListView(
-            children: List.generate(station.length, (idx) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.pop(context, [station[idx], title]);
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Colors.grey[300]!))),
-              width: double.infinity,
-              height: 50,
-              alignment: Alignment.centerLeft,
-              child: Text(
-                station[idx],
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-          );
-        })),
-      ),
+      body: stationListView(context),
     );
+  }
+
+  ListView stationListView(BuildContext context) {
+    return ListView(
+        children: List.generate(station.length, (idx) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.pop(context, [station[idx], title]);
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: 20),
+          decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey[300]!))),
+          width: double.infinity,
+          height: 50,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            station[idx],
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }));
   }
 }

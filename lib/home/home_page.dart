@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     "울산",
     "부산"
   ];
+  // 역 리스트 초기화하기 위해 List 추가
   List<String> initStation = [
     "수서",
     "동탄",
@@ -44,6 +45,7 @@ class _HomePageState extends State<HomePage> {
   String? departure;
   String? arrival;
 
+  // stationListPage로부터 데이터를 받아와 상태인 departure와 arrival에 등록하는 함수
   void setStation(String title) async {
     final data = await Navigator.push(
       context,
@@ -75,6 +77,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // 예매 완료 이후 dapartment와 arrival을 초기화하는 함수
   void setIntialDepartmentAndArrival() {
     setState(() {
       departure = null;
@@ -93,99 +96,106 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(20)),
-              child: Row(
+            selectCard(context),
+            SizedBox(
+              height: 20,
+            ),
+            selectBtn(context)
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 역 선택 카드
+  Container selectCard(BuildContext context) {
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(20)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setStation("출발역"),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setStation("출발역"),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("출발역",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold)),
-                          Text(
-                            departure ?? "선택",
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 2,
-                    height: 50,
-                    child: DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.grey)),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setStation("도착역"),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("도착역",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold)),
-                          Text(
-                            arrival ?? "선택",
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ],
-                      ),
-                    ),
+                  Text("출발역",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold)),
+                  Text(
+                    departure ?? "선택",
+                    style: TextStyle(fontSize: 40),
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              height: 20,
+          ),
+          SizedBox(
+            width: 2,
+            height: 50,
+            child: DecoratedBox(decoration: BoxDecoration(color: Colors.grey)),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setStation("도착역"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("도착역",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold)),
+                  Text(
+                    arrival ?? "선택",
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  onPressed: (() async {
-                    if (departure == null || arrival == null) return;
-                    final data = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return SeatPage(
-                            departure: departure!,
-                            arrival: arrival!,
-                          );
-                        },
-                      ),
-                    );
-                    setIntialDepartmentAndArrival();
-                    print("$data");
-                  }),
-                  child: Text(
-                    "좌석 선택",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  )),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+  }
+
+  // 좌석 선택 버튼
+  SizedBox selectBtn(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.purple,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+          onPressed: (() async {
+            if (departure == null || arrival == null) return;
+            final data = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return SeatPage(
+                    departure: departure!,
+                    arrival: arrival!,
+                  );
+                },
+              ),
+            );
+            setIntialDepartmentAndArrival();
+            print("$data");
+          }),
+          child: Text(
+            "좌석 선택",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          )),
     );
   }
 }
