@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     );
-                    if (data == null) return;
+                    print("$data");
                   }),
                   child: Text(
                     "좌석 선택",
