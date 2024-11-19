@@ -154,7 +154,29 @@ class _SeatPageState extends State<SeatPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20))),
           onPressed: () {
-            if (selectedCol == null || selectedRow == null) return;
+            if (selectedCol == null || selectedRow == null) {
+              showCupertinoDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('오류'),
+                    content: Text("좌석을 선택해주세요."),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              return;
+            }
 
             showCupertinoDialog(
               context: context,
