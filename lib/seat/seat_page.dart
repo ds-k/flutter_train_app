@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_train_app/seat/widget/seatRow.dart';
+import 'package:flutter_train_app/seat/widget/label.dart';
+import 'package:flutter_train_app/seat/widget/seat_row.dart';
 
-class SeatPage extends StatelessWidget {
+class SeatPage extends StatefulWidget {
   SeatPage({required this.departure, required this.arrival, super.key});
 
   final String departure;
   final String arrival;
-  final List<Widget> seatList = List.generate(20, (idx) => seatRow(idx, false));
+
+  @override
+  State<SeatPage> createState() => _SeatPageState();
+}
+
+class _SeatPageState extends State<SeatPage> {
+  int? selectedCol;
+  String? selectedRow;
+
+  void onTapSeat(col, row) {
+    setState(() {
+      selectedCol = col;
+      selectedRow = row;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("$selectedCol, $selectedRow");
     return Scaffold(
       appBar: AppBar(
         title: Text("좌석 선택"),
@@ -22,7 +38,7 @@ class SeatPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  departure,
+                  widget.departure,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.purple,
@@ -33,7 +49,7 @@ class SeatPage extends StatelessWidget {
                   size: 30,
                 ),
                 Text(
-                  arrival,
+                  widget.arrival,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.purple,
@@ -82,7 +98,25 @@ class SeatPage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(child: Expanded(child: ListView(children: seatList))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                label("A"),
+                label("B"),
+                label(" "),
+                label("C"),
+                label("D"),
+              ],
+            ),
+            Expanded(
+                child: ListView(
+                    children: List.generate(
+                        20,
+                        (col) => seatRow(
+                            col: col,
+                            selectedCol: selectedCol,
+                            selectedRow: selectedRow,
+                            onTapSeat: onTapSeat)))),
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -97,8 +131,8 @@ class SeatPage extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) {
                           return SeatPage(
-                            departure: departure!,
-                            arrival: arrival!,
+                            departure: widget.departure!,
+                            arrival: widget.arrival!,
                           );
                         },
                       ),
