@@ -75,6 +75,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void setIntialDepartmentAndArrival() {
+    setState(() {
+      departure = null;
+      arrival = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     );
+                    setIntialDepartmentAndArrival();
                     print("$data");
                   }),
                   child: Text(
