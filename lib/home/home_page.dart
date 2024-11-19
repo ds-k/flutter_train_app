@@ -27,6 +27,19 @@ class _HomePageState extends State<HomePage> {
     "울산",
     "부산"
   ];
+  List<String> initStation = [
+    "수서",
+    "동탄",
+    "평택지제",
+    "천안아산",
+    "오송",
+    "대전",
+    "김천구미",
+    "동대구",
+    "경주",
+    "울산",
+    "부산",
+  ];
 
   String? departure;
   String? arrival;
@@ -44,16 +57,20 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     if (data == null) return;
-
     switch (data[1]) {
       case "출발역":
         setState(() {
+          station = List.from(
+              initStation); // 같은 리스트로 카피가 되는 현상을 발견해서, 찾아보고 메서드를 적용했습니다.
           departure = data[0];
+          station.remove(departure);
         });
 
       case "도착역":
         setState(() {
+          station = List.from(initStation);
           arrival = data[0];
+          station.remove(arrival);
         });
     }
   }
@@ -136,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
                   onPressed: (() async {
+                    if (departure == null || arrival == null) return;
                     final data = await Navigator.push(
                       context,
                       MaterialPageRoute(
