@@ -215,9 +215,11 @@ class _HomePageState extends State<HomePage> {
               ),
             );
             setIntialDepartmentAndArrival();
-            setState(() {
-              reservationList.add(data);
-            });
+            if (data != null) {
+              setState(() {
+                reservationList.add(data);
+              });
+            }
           }),
           child: Text(
             "좌석 선택",
