@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class seatRow extends StatefulWidget {
-  seatRow(
+class SeatRow extends StatefulWidget {
+  SeatRow(
       {required this.col,
       required this.onTapSeat,
       this.selectedCol,
@@ -15,10 +15,10 @@ class seatRow extends StatefulWidget {
   Function onTapSeat;
 
   @override
-  State<seatRow> createState() => _seatRowState();
+  State<SeatRow> createState() => _SeatRowState();
 }
 
-class _seatRowState extends State<seatRow> {
+class _SeatRowState extends State<SeatRow> {
   Widget seat(String row) {
     return GestureDetector(
       onTap: () {
