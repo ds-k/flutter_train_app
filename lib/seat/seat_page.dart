@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_train_app/seat/widget/label.dart';
 import 'package:flutter_train_app/seat/widget/seat_row.dart';
@@ -25,7 +26,6 @@ class _SeatPageState extends State<SeatPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("$selectedCol, $selectedRow");
     return Scaffold(
       appBar: AppBar(
         title: Text("좌석 선택"),
@@ -108,7 +108,8 @@ class _SeatPageState extends State<SeatPage> {
                 label("D"),
               ],
             ),
-            Expanded(
+            SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
                 child: ListView(
                     children: List.generate(
                         20,
@@ -125,20 +126,41 @@ class _SeatPageState extends State<SeatPage> {
                       backgroundColor: Colors.purple,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
-                  onPressed: (() async {
-                    final data = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return SeatPage(
-                            departure: widget.departure!,
-                            arrival: widget.arrival!,
-                          );
-                        },
-                      ),
+                  onPressed: () {
+                    if (selectedCol == null || selectedRow == null) return;
+
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title: Text('예매 하시겠습니까?'),
+                          content: Text("좌석 : $selectedCol-$selectedRow"),
+                          actions: <Widget>[
+                            CupertinoDialogAction(
+                              child: Text(
+                                '취소',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: Text(
+                                '확인',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop(
+                                    "출발역 : ${widget.departure} \n 도착역 : ${widget.arrival} \n 좌석 : $selectedCol-$selectedRow");
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
-                    if (data == null) return;
-                  }),
+                  },
                   child: Text(
                     "예매 하기",
                     style: TextStyle(
