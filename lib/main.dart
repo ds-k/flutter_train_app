@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_train_app/home_page.dart';
+import 'package:flutter_train_app/home/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         cardColor: Colors.white,
         scaffoldBackgroundColor: Colors.grey[200],
+        // scaffoldBackgroundColor: Color.fromRGBO(255, 246, 249, 1),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,

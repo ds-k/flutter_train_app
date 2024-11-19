@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_train_app/seat_page.dart';
-import 'package:flutter_train_app/station_list_page.dart';
+import 'package:flutter_train_app/seat/seat_page.dart';
+import 'package:flutter_train_app/stationList/station_list_page.dart';
 
 enum StationType { departure, arrival }
 
@@ -97,10 +97,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                      width: 2,
-                      height: 50,
-                      child: DecoratedBox(
-                          decoration: BoxDecoration(color: Colors.grey))),
+                    width: 2,
+                    height: 50,
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.grey)),
+                  ),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => setStation("도착역"),
@@ -134,7 +135,20 @@ class _HomePageState extends State<HomePage> {
                       backgroundColor: Colors.purple,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
-                  onPressed: (() {}),
+                  onPressed: (() async {
+                    final data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SeatPage(
+                            departure: departure!,
+                            arrival: arrival!,
+                          );
+                        },
+                      ),
+                    );
+                    if (data == null) return;
+                  }),
                   child: Text(
                     "좌석 선택",
                     style: TextStyle(
