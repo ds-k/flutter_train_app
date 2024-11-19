@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SeatRow extends StatefulWidget {
+class SeatRow extends StatelessWidget {
   SeatRow(
       {required this.col,
       required this.onTapSeat,
@@ -14,24 +14,18 @@ class SeatRow extends StatefulWidget {
   String? selectedRow;
   Function onTapSeat;
 
-  @override
-  State<SeatRow> createState() => _SeatRowState();
-}
-
-class _SeatRowState extends State<SeatRow> {
   Widget seat(String row) {
     return GestureDetector(
       onTap: () {
         // 상태 변화를 시킬수 있는 함수
-        widget.onTapSeat(widget.col + 1, row);
+        onTapSeat(col + 1, row);
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-            color: row == widget.selectedRow &&
-                    widget.col + 1 == widget.selectedCol
+            color: row == selectedRow && col + 1 == selectedCol
                 ? Colors.purple
                 : Colors.grey[300]!,
             borderRadius: BorderRadius.circular(8)),
@@ -51,7 +45,7 @@ class _SeatRowState extends State<SeatRow> {
             width: 50,
             height: 50,
             alignment: Alignment.center,
-            child: Text((widget.col + 1).toString())),
+            child: Text((col + 1).toString())),
         seat("C"),
         seat("D")
       ],
