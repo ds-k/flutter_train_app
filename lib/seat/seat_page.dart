@@ -179,8 +179,10 @@ class _SeatPageState extends State<SeatPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        Navigator.of(context).pop(
-                            "출발역 : ${widget.departure} \n 도착역 : ${widget.arrival} \n 좌석 : $selectedCol-$selectedRow");
+                        Navigator.of(context).pop({
+                          "title": "${widget.departure} - ${widget.arrival}",
+                          "seat": "$selectedCol-$selectedRow"
+                        });
                       },
                     ),
                   ],

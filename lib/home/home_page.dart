@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_train_app/seat/seat_page.dart';
 import 'package:flutter_train_app/stationList/station_list_page.dart';
@@ -41,6 +42,8 @@ class _HomePageState extends State<HomePage> {
     "울산",
     "부산",
   ];
+
+  List<Map<String, String>> reservationList = [];
 
   String? departure;
   String? arrival;
@@ -104,6 +107,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButton: revationListView(context),
     );
   }
 
@@ -176,7 +180,29 @@ class _HomePageState extends State<HomePage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20))),
           onPressed: (() async {
-            if (departure == null || arrival == null) return;
+            if (departure == null || arrival == null) {
+              showCupertinoDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('오류'),
+                    content: Text("출발역과 도착역을 선택해주세요."),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        child: Text(
+                          '확인',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              return;
+            }
             final data = await Navigator.push(
               context,
               MaterialPageRoute(
@@ -189,13 +215,140 @@ class _HomePageState extends State<HomePage> {
               ),
             );
             setIntialDepartmentAndArrival();
-            print("$data");
+            setState(() {
+              reservationList.add(data);
+            });
           }),
           child: Text(
             "좌석 선택",
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
           )),
+    );
+  }
+
+  // 나만의 기능 : 예매 내역 볼 수 있는 페이지
+  FloatingActionButton revationListView(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.all(24.0),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "예매 내역",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    reservationList.isEmpty
+                        ? Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: Colors.redAccent,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text("예매 내역이 없습니다.")
+                              ],
+                            ),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: reservationList.length,
+                              itemBuilder: (BuildContext context, int idx) {
+                                return Card(
+                                    margin: EdgeInsets.symmetric(vertical: 4),
+                                    child: ListTile(
+                                      title: Text(
+                                        reservationList[idx]["title"]!,
+                                        style: TextStyle(
+                                            color: Colors.purple,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                      subtitle: Text(
+                                          "좌석 : ${reservationList[idx]["seat"]!}"),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          showCupertinoDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return CupertinoAlertDialog(
+                                                title: Text('예매를 취소하시겠습니까?'),
+                                                content: Text(
+                                                    "${reservationList[idx]["title"]!}, 좌석: ${reservationList[idx]["seat"]!}"),
+                                                actions: <Widget>[
+                                                  CupertinoDialogAction(
+                                                    child: Text(
+                                                      '취소',
+                                                      style: TextStyle(
+                                                          color: Colors.red),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  CupertinoDialogAction(
+                                                    child: Text(
+                                                      '확인',
+                                                      style: TextStyle(
+                                                          color: Colors.blue),
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        reservationList
+                                                            .removeAt(idx);
+                                                      });
+
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Icon(
+                                          Icons.cancel_outlined,
+                                        ),
+                                      ),
+                                    ));
+                              },
+                            ),
+                          ),
+                  ],
+                ),
+              );
+            });
+      },
+      backgroundColor: Colors.purple,
+      shape: CircleBorder(),
+      child: Icon(
+        Icons.format_list_bulleted,
+        color: Colors.white,
+      ),
     );
   }
 }
