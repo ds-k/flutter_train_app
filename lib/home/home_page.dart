@@ -5,7 +5,7 @@ import 'package:flutter_train_app/stationList/station_list_page.dart';
 enum StationType { departure, arrival }
 
 class HomePage extends StatefulWidget {
-  String? selectedStation;
+  final String? selectedStation;
 
   HomePage({this.selectedStation, super.key});
 

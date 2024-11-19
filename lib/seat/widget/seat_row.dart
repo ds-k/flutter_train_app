@@ -10,9 +10,9 @@ class SeatRow extends StatelessWidget {
 
   final int col;
 
-  int? selectedCol;
-  String? selectedRow;
-  Function onTapSeat;
+  final int? selectedCol;
+  final String? selectedRow;
+  final Function onTapSeat;
 
   Widget seat(String row) {
     return GestureDetector(
