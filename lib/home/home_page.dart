@@ -255,6 +255,7 @@ class _HomePageState extends State<HomePage> {
                     reservationList.isEmpty
                         ? Expanded(
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.error_outline,
